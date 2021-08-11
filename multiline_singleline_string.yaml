@@ -1,0 +1,14 @@
+stringline:
+  - multilineString: |
+      This is multiline string
+      this is second line of multiline string
+      this is third line
+  - multiString2: |
+        This is second multiline string
+        This is 2nd line
+        this is 3rd line
+  - singlelineString: >
+      This is singleline string,
+      this line should be on 1st line
+      some other stuff
+    

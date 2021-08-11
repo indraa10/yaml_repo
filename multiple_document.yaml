@@ -1,0 +1,102 @@
+---
+#object in yaml . here microservice is object
+microservice:
+  app: user-authentication
+  port: 8081
+  version: 1.90
+  deployed: False
+
+---
+apiVersion: v1                              #key-value pair
+kind: pod                                   #key-value pair
+metadata:                                #metadata = object
+  name: ngnix                               #key-value pair
+  labels:                                #labels = object
+    app: ngnix                              #key-value pair
+spec:                                    #spec = object
+  containers:                            #containers = list of object
+  - name: nginx-container                   #list
+    image: nginx
+    ports:                               #ports = list of object
+    - containerPort: 80
+    volumeMounts:                        #volumeMounts = list of objects
+    - name: nginx-vol
+      mountPath: /usr/nginx/html
+  - name: sidecar-container
+    image: curlimages/curl
+    command: ["/bin/bash"]                # alternative way to write list
+    args: ["-c", "echo Hello from the sidecar container; sleep 300"] # alternative way to write list
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.service.name }}
+spec:
+  selector:
+    app: {{ .Values.service.app }}   #instead of putting the vaule directly we can put placeholders
+  ports:
+    - protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetport }}
+
+---
+stringline:
+  - multilineString: |
+      This is multiline string
+      this is second line of multiline string
+      this is third line
+  - multiString2: |
+        This is second multiline string
+        This is 2nd line
+        this is 3rd line
+  - singlelineString: >
+      This is singleline string,
+      this line should be on 1st line
+      some other stuff
+    
+---
+#object in yaml . here microservice is object
+microservice:
+  - app: user-authentication
+    port: 8081
+    version: 1.90
+    deployed: Falsev
+  - app: shopping-cart
+    
+  
+---
+#readiness probe
+command:
+  - /bin/bash
+  - -ec
+  - >-
+    mysql -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD -e 'SELECT 1'
+
+# to declare the env variable use '$' like here we use as $MYSQL_ROOT_PASSWORD
+---
+#define object in list items 
+#storing an object as list item
+friends:
+  - name: &name "Sudip"
+    age: 30
+  - { name: "debu", age: 31 }
+  -
+    name: "santanu"
+    age: 32
+
+employee:
+  - id: *name   # here value of key 'id' is 'Sudip' . We have just anchored the value . 
+
+
+---
+# anchoring complete key value pair
+
+base: &base
+  var1: value1
+
+foo:
+  <<: *base   #var1: value1
+  var2: value2
+

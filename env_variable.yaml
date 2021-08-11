@@ -1,0 +1,8 @@
+#readiness probe
+command:
+  - /bin/bash
+  - -ec
+  - >-
+    mysql -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD -e 'SELECT 1'
+
+# to declare the env variable use '$' like here we use as $MYSQL_ROOT_PASSWORD

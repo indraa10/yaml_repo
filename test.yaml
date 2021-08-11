@@ -1,0 +1,6 @@
+#object in yaml . here microservice is object
+microservice:
+  app: user-authentication
+  port: 8081
+  version: 1.90
+  deployed: False
